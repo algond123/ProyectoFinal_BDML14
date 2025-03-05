@@ -2,6 +2,32 @@
 
 ---
 
+## Información Importante para el Proyecto Final
+
+### Formación de Equipos
+- **Formulario de formación de equipos**: [Formulario de inscripción](https://forms.gle/BZ489f46QnMUfmoa8)
+- **Fecha límite**: lunes, 10 de marzo de 2025
+- **Importante**: Solo uno de los miembros del equipo debe completar la inscripción. Cada grupo debe inscribirse solo una vez. Si no se inscribe antes de la fecha, el equipo no podrá participar en la presentación de proyectos finales.
+
+### Calendario del Proyecto Final
+- **Arranque**: lunes, 3 de marzo de 2025
+- **Fecha límite para la formación de equipos**: lunes, 10 de marzo de 2025
+- **Enunciado**: El enunciado del proyecto final será compartido y explicado durante la tutoría de arranque el 3 de marzo.
+- **Dudas**: Podéis plantear dudas a través de Discord en el Canal de Proyecto Final.
+- **Tutorías**: Solo se habilitarán para dudas que no puedan resolverse a través de Discord. Las tutorías se grabarán y estarán disponibles para la consulta posterior.
+
+### Entrega del Proyecto Final
+- **Formulario de entrega**: [Formulario de entrega](https://forms.gle/NgmwTWFbUHJpu4kv7)
+- **Fecha límite de entrega**: jueves, 3 de abril de 2025 hasta las 12:00 (hora España)
+- **Importante**: Es obligatorio cumplir con esta fecha. Quien no haya enviado el Proyecto Final antes de esta fecha y hora, NO podrá participar en la presentación de proyectos finales.
+
+### Presentación del Proyecto Final
+- **Fecha**: jueves, 3 de abril de 2025
+- **Horario**: A partir de las 19:00 horas (hora España). El horario específico se comunicará más adelante por grupo.
+- **Presentación grabada**: La presentación final podrá ser grabada y los videos podrán ser utilizados para presentaciones ante empresas o en el evento de cierre del Bootcamp.
+
+---
+
 ## Proyecto Final del Bootcamp Big Data, AI, Machine Learning, KeeepCoding version 14
 
 ### 1. **Selección del Dataset**
