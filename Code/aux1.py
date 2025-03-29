@@ -8,18 +8,18 @@ import pandas as pd
 import numpy as np
 
 # Optimal number of clusters
-k_optimal = 4
+k_optimal = 3
 
 # Features to be used in the analysis
 #FEATURES = ['danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence','tempo']
 #FEATURES = ['valence','energy','tempo','loudness','danceability','acousticness','instrumentalness','speechiness','liveness']
 
-FEATURES = ['valence','energy','danceability','tempo','loudness']
+FEATURES = ['valence','energy','danceability','tempo']
 #FEATURES = ['valence','energy','danceability','tempo','loudness', 'liveness','speechiness']
 #FEATURES = ['valence','energy','danceability','tempo','loudness', 'liveness','speechiness','acousticness','instrumentalness']
 
 # Load the dataset
-df = pd.read_csv('./DataSource/tracks.csv')
+df = pd.read_csv('./Code/DataSource/tracks.csv')
 df = df[FEATURES].dropna().copy()
 
 # Standardize the data (scaling to mean=0, std=1)
