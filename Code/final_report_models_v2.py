@@ -22,8 +22,7 @@ logging.basicConfig(
     ]
 )
 
-FEATURES = ['danceability', 'energy', 'loudness', 'speechiness',
-            'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo']
+FEATURES = ['valence','energy','danceability','tempo','loudness']
 
 
 def clusters_info(scaled_pkl: str, model_pkl: str):
@@ -98,6 +97,7 @@ results = []
 #Kmeans
 clusters_info('./DataProduced/data_scaled.pkl','./DataProduced/model_kmeans.pkl')
 
+#'''
 #Random Forest
 results.append(evaluate_model('./DataProduced/data_test.pkl',
                               './DataProduced/model_random_forest.pkl','./DataProduced/grid_random_forest.pkl',
@@ -131,3 +131,4 @@ results.append(evaluate_model('./DataProduced/data_test.pkl',
 
 summary_df = pd.DataFrame(results)
 logging.info(f"\nModel Evaluation Summary:\n{summary_df.to_string(index=False)}\n")
+#'''

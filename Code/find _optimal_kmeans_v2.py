@@ -24,9 +24,7 @@ logging.basicConfig(
     ]
 )
 
-FEATURES = ['danceability', 'energy', 'loudness', 'speechiness',
-            'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo']
-
+FEATURES = ['valence','energy','danceability','tempo','loudness']
 
 
 logging.info("Step 1: Loading dataset and Selecting features")
@@ -43,7 +41,7 @@ sil_results = []
 ch_results = []
 db_results = []
 
-k_range = range(2, 16)
+k_range = range(2, 10)
 for k in k_range:
     logging.info(f"  Running K-Means for k={k}...")
     start_time = time.time()

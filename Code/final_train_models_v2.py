@@ -29,8 +29,9 @@ logging.basicConfig(
     ]
 )
 
-FEATURES = ['danceability', 'energy', 'loudness', 'speechiness',
-            'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo']
+k_optimal = 3
+
+FEATURES = ['valence','energy','danceability','tempo','loudness']
 
 
 # Process dataset
@@ -63,7 +64,7 @@ def train_kmeans(scaled_input_pkl: str, scaled_labeled_output_pkl: str, model_ou
     logging.info(f"K-means Training (Get Clusters)")
 
     data_scaled = joblib.load(scaled_input_pkl)
-    kmeans = KMeans(n_clusters=6, random_state=42, n_init=10)
+    kmeans = KMeans(n_clusters=k_optimal, random_state=42, n_init=10)
     data_scaled['mood'] = kmeans.fit_predict(data_scaled)
 
     joblib.dump(kmeans, model_output_pkl)
@@ -322,6 +323,7 @@ train_kmeans('./DataProduced/data_scaled.pkl', './DataProduced/data_scaled_label
 # Save Train and test data using scaled labeled data
 save_train_and_test_data('./DataProduced/data_scaled_labeled.pkl', './DataProduced/data_train.pkl', './DataProduced/data_test.pkl')
 
+#'''
 # Train Random Forest using scaled labeled data
 train_random_forest('./DataProduced/data_train.pkl','./DataProduced/model_random_forest.pkl','./DataProduced/grid_random_forest.pkl')
 
@@ -339,3 +341,4 @@ train_hist_gradient_boost('./DataProduced/data_train.pkl','./DataProduced/model_
 
 # Train XGBoost using scaled labeled data
 train_xgboost('./DataProduced/data_train.pkl','./DataProduced/model_xgboost.pkl','./DataProduced/grid_xgboost.pkl')
+#'''

@@ -1,0 +1,54 @@
+2025-03-29 10:20:44,015 - Clean and Normalize Dataset
+2025-03-29 10:20:46,150 - Scaler saved to: ./DataProduced/scaler.pkl
+2025-03-29 10:20:46,151 - Scaled data saved to: ./DataProduced/data_scaled.pkl
+2025-03-29 10:20:46,151 - Completed in 2.14 seconds
+
+
+2025-03-29 10:20:46,158 - K-means Training (Get Clusters)
+2025-03-29 10:20:48,189 - Model saved to: ./DataProduced/model_kmeans.pkl
+2025-03-29 10:20:48,190 - Scaled labeled data saved to: ./DataProduced/data_scaled_labeled.pkl
+2025-03-29 10:20:48,190 - Completed in 2.03 seconds
+
+
+2025-03-29 10:20:48,193 - Splitting and saving train/test data
+2025-03-29 10:20:48,599 - Train data saved to: ./DataProduced/data_train.pkl
+2025-03-29 10:20:48,599 - Test data saved to: ./DataProduced/data_test.pkl
+2025-03-29 10:20:48,600 - Completed in 0.41 seconds
+
+
+2025-03-29 10:20:48,610 - Random Forest Model Training
+2025-03-29 10:27:47,252 - Model saved to: ./DataProduced/model_random_forest.pkl
+2025-03-29 10:27:47,253 - Grid saved to: ./DataProduced/grid_random_forest.pkl
+2025-03-29 10:27:47,253 - Completed in 418.64 seconds
+
+
+2025-03-29 10:27:47,266 - KNN Model Training
+2025-03-29 10:32:27,786 - Model saved to: ./DataProduced/model_knn.pkl
+2025-03-29 10:32:27,786 - Grid saved to: ./DataProduced/grid_knn.pkl
+2025-03-29 10:32:27,787 - Completed in 280.52 seconds
+
+
+2025-03-29 10:32:27,791 - Logistic Regression Model Training
+2025-03-29 10:32:33,847 - Model saved to: ./DataProduced/model_logistic_regression.pkl
+2025-03-29 10:32:33,847 - Grid saved to: ./DataProduced/grid_logistic_regression.pkl
+2025-03-29 10:32:33,848 - Completed in 6.06 seconds
+
+
+2025-03-29 10:32:33,850 - SVC Model Training
+2025-03-29 10:35:14,869 - Model saved to: ./DataProduced/model_svc.pkl
+2025-03-29 10:35:14,869 - Grid saved to: ./DataProduced/grid_svc.pkl
+2025-03-29 10:35:14,870 - Completed in 161.02 seconds
+
+
+2025-03-29 10:35:14,873 - Hist Gradient Boosting Model Training
+2025-03-29 10:37:42,081 - Model saved to: ./DataProduced/model_hist_gradient_boost.pkl
+2025-03-29 10:37:42,082 - Grid saved to: ./DataProduced/grid_hist_gradient_boost.pkl
+2025-03-29 10:37:42,082 - Completed in 147.21 seconds
+
+
+2025-03-29 10:37:42,087 - XGBoost Model Training
+2025-03-29 10:39:23,468 - Model saved to: ./DataProduced/model_xgboost.pkl
+2025-03-29 10:39:23,468 - Grid saved to: ./DataProduced/grid_xgboost.pkl
+2025-03-29 10:39:23,469 - Completed in 101.38 seconds
+
+
