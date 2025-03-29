@@ -8,7 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.ensemble import HistGradientBoostingClassifier
 from xgboost import XGBClassifier
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.model_selection import train_test_split, GridSearchCV
 
 import joblib
@@ -16,9 +16,13 @@ import logging
 import time
 from datetime import datetime
 
+path_src = './Code/Source/'
+path_data = './Code/Data/'
+path_models = './Code/Models/'
+path_log = './Code/Logging/'
 
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-log_filename = f"./DataLogged/{timestamp}_models_train.log"
+log_filename = f"{path_log}{timestamp}_models_train.log"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -29,32 +33,50 @@ logging.basicConfig(
     ]
 )
 
-k_optimal = 3
-
-FEATURES = ['valence','energy','danceability','tempo','loudness']
-
 
 # Process dataset
 def clean_normalize_dataset(input_csv: str, scaled_output_pkl: str, scaler_output_pkl: str):
 
     start_time = time.time()
+    print(f"Clean and Normalize Dataset")
 
-    logging.info(f"Clean and Normalize Dataset")
+    # Features
+    old_features = ['valence', 'energy', 'tempo', 'loudness', 'danceability']
+    new_features = ['valence', 'arousal']
 
+    # Load the data and clean it (drop missing values)
     df = pd.read_csv(input_csv)
-    df = df[FEATURES].dropna().copy()
+    df = df[old_features].dropna().copy()
 
-    scaler = StandardScaler()
+    # Initialize and apply the MinMaxScaler
+    scaler = MinMaxScaler()  # Scaling features between 0 and 1
     data_scaled = scaler.fit_transform(df)
+    
+    # Save the scaler for future use
     joblib.dump(scaler, scaler_output_pkl)
 
-    scaled_df = pd.DataFrame(data_scaled, columns=FEATURES)
-    joblib.dump(scaled_df, scaled_output_pkl)
+    # Convert the scaled data back to a DataFrame
+    scaled_df = pd.DataFrame(data_scaled, columns=old_features)
 
-    logging.info(f"Scaler saved to: {scaler_output_pkl}")
-    logging.info(f"Scaled data saved to: {scaled_output_pkl}")
+    # Define the weights for the features
+    alpha = 0.3
+    beta = 0.25
+    gamma = 0.25
+    delta = 0.2
+    
+    # Calculate the arousal score (weighted sum of selected features)
+    scaled_df['arousal'] = (alpha * scaled_df['energy']) + \
+                           (beta * scaled_df['tempo']) + \
+                           (gamma * scaled_df['loudness']) + \
+                           (delta * scaled_df['danceability'])
 
-    logging.info(f"Completed in {time.time() - start_time:.2f} seconds\n\n")
+    # Select the relevant columns (valence and arousal)
+    scaled_df = scaled_df[new_features].dropna().copy()
+
+    # Save the cleaned and scaled DataFrame to a pickle file
+    scaled_df.to_pickle(scaled_output_pkl)
+
+    print(f"Completed in {time.time() - start_time:.2f} seconds")
 
 # Kmeans Clustering
 def train_kmeans(scaled_input_pkl: str, scaled_labeled_output_pkl: str, model_output_pkl: str):
@@ -64,7 +86,7 @@ def train_kmeans(scaled_input_pkl: str, scaled_labeled_output_pkl: str, model_ou
     logging.info(f"K-means Training (Get Clusters)")
 
     data_scaled = joblib.load(scaled_input_pkl)
-    kmeans = KMeans(n_clusters=k_optimal, random_state=42, n_init=10)
+    kmeans = KMeans(n_clusters=4, random_state=42, n_init=10)
     data_scaled['mood'] = kmeans.fit_predict(data_scaled)
 
     joblib.dump(kmeans, model_output_pkl)
@@ -313,32 +335,49 @@ def train_xgboost(train_data_pkl: str, model_output_pkl: str, grid_output_pkl: s
     logging.info(f"Completed in {time.time() - start_time:.2f} seconds\n\n")
 
 
-
 # Clean and Normalize dataset
-clean_normalize_dataset('./DataSource/tracks.csv', './DataProduced/data_scaled.pkl', './DataProduced/scaler.pkl')
+clean_normalize_dataset(f"{path_src}tracks.csv",
+                        f"{path_data}data_scaled.pkl",
+                        f"{path_data}scaler.pkl")
 
 # Train KMeans using scaled data
-train_kmeans('./DataProduced/data_scaled.pkl', './DataProduced/data_scaled_labeled.pkl', './DataProduced/model_kmeans.pkl')
+train_kmeans(f"{path_data}data_scaled.pkl",
+             f"{path_data}data_scaled_labeled.pkl",
+             f"{path_models}model_kmeans.pkl")
 
 # Save Train and test data using scaled labeled data
-save_train_and_test_data('./DataProduced/data_scaled_labeled.pkl', './DataProduced/data_train.pkl', './DataProduced/data_test.pkl')
+save_train_and_test_data(f"{path_data}data_scaled_labeled.pkl", 
+                         f"{path_data}data_train.pkl",
+                         f"{path_data}data_test.pkl")
 
 #'''
 # Train Random Forest using scaled labeled data
-train_random_forest('./DataProduced/data_train.pkl','./DataProduced/model_random_forest.pkl','./DataProduced/grid_random_forest.pkl')
+train_random_forest(f"{path_data}data_train.pkl",
+                    f"{path_models}model_random_forest.pkl",
+                    f"{path_models}grid_random_forest.pkl")
 
 # Train KNN using scaled labeled data
-train_knn('./DataProduced/data_train.pkl','./DataProduced/model_knn.pkl','./DataProduced/grid_knn.pkl')
+train_knn(f"{path_data}data_train.pkl",
+          f"{path_models}model_knn.pkl",
+          f"{path_models}grid_knn.pkl")
 
 # Train Logistic Regression using scaled labeled data
-train_logistic_regression('./DataProduced/data_train.pkl','./DataProduced/model_logistic_regression.pkl','./DataProduced/grid_logistic_regression.pkl')
+train_logistic_regression(f"{path_data}data_train.pkl",
+                          f"{path_models}model_logistic_regression.pkl",
+                          f"{path_models}grid_logistic_regression.pkl")
 
 # Train SVC using scaled labeled data
-train_svc('./DataProduced/data_train.pkl','./DataProduced/model_svc.pkl','./DataProduced/grid_svc.pkl')
+train_svc(f"{path_data}data_train.pkl",
+          f"{path_models}model_svc.pkl",
+          f"{path_models}grid_svc.pkl")
 
 # Train Gradient Boost using scaled labeled data
-train_hist_gradient_boost('./DataProduced/data_train.pkl','./DataProduced/model_hist_gradient_boost.pkl','./DataProduced/grid_hist_gradient_boost.pkl')
+train_hist_gradient_boost(f"{path_data}data_train.pkl",
+                          f"{path_models}model_hist_gradient_boost.pkl",
+                          f"{path_models}grid_hist_gradient_boost.pkl")
 
 # Train XGBoost using scaled labeled data
-train_xgboost('./DataProduced/data_train.pkl','./DataProduced/model_xgboost.pkl','./DataProduced/grid_xgboost.pkl')
+train_xgboost(f"{path_data}data_train.pkl",
+              f"{path_models}model_xgboost.pkl",
+              f"{path_models}grid_xgboost.pkl")
 #'''

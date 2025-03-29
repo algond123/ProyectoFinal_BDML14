@@ -9,9 +9,13 @@ import logging
 import time
 from datetime import datetime
 
+path_src = './Code/Source/'
+path_data = './Code/Data/'
+path_models = './Code/Models/'
+path_log = './Code/Logging/'
 
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-log_filename = f"./DataLogged/{timestamp}_models_report.log"
+log_filename = f"{path_log}{timestamp}_models_report.log"
 
 logging.basicConfig(
     level=logging.INFO,
@@ -95,39 +99,44 @@ def evaluate_model(test_data_pkl: str, model_pkl: str, grid_pkl: str, model_name
 results = []
 
 #Kmeans
-clusters_info('./DataProduced/data_scaled.pkl','./DataProduced/model_kmeans.pkl')
+#clusters_info("{path_models}data_scaled.pkl","{path_models}model_kmeans.pkl")
 
 #'''
 #Random Forest
-results.append(evaluate_model('./DataProduced/data_test.pkl',
-                              './DataProduced/model_random_forest.pkl','./DataProduced/grid_random_forest.pkl',
-                              "Random Forest"))
+results.append(evaluate_model(f"{path_data}data_test.pkl",
+                              f"{path_models}model_random_forest.pkl",
+                              f"{path_models}grid_random_forest.pkl",
+                              f"Random Forest"))
 
 #KNN
-results.append(evaluate_model('./DataProduced/data_test.pkl',
-                              './DataProduced/model_knn.pkl','./DataProduced/grid_knn.pkl',
-                              "KNN"))
+results.append(evaluate_model(f"{path_data}data_test.pkl",
+                              f"{path_models}model_knn.pkl",
+                              f"{path_models}grid_knn.pkl",
+                              f"KNN"))
 
 #Logistic Regression
-results.append(evaluate_model('./DataProduced/data_test.pkl',
-                              './DataProduced/model_logistic_regression.pkl',
-                              './DataProduced/grid_logistic_regression.pkl',
-                              "Logistic Regression"))
+results.append(evaluate_model(f"{path_data}data_test.pkl",
+                              f"{path_models}model_logistic_regression.pkl",
+                              f"{path_models}grid_logistic_regression.pkl",
+                              f"Logistic Regression"))
 
 #SVC
-results.append(evaluate_model('./DataProduced/data_test.pkl',
-                              './DataProduced/model_svc.pkl','./DataProduced/grid_svc.pkl',
-                              "SVC"))
+results.append(evaluate_model(f"{path_data}data_test.pkl",
+                              f"{path_models}model_svc.pkl",
+                              f"{path_models}grid_svc.pkl",
+                              f"SVC"))
 
 #Hist Gradient Boost
-results.append(evaluate_model('./DataProduced/data_test.pkl',
-                              './DataProduced/model_hist_gradient_boost.pkl','./DataProduced/grid_hist_gradient_boost.pkl',
-                              "Hist Gradient Boost"))
+results.append(evaluate_model(f"{path_data}data_test.pkl",
+                              f"{path_models}model_hist_gradient_boost.pkl",
+                              f"{path_models}grid_hist_gradient_boost.pkl",
+                              f"Hist Gradient Boost"))
 
 #XGBoost
-results.append(evaluate_model('./DataProduced/data_test.pkl',
-                              './DataProduced/model_xgboost.pkl','./DataProduced/grid_xgboost.pkl',
-                              "XGBoost"))
+results.append(evaluate_model(f"{path_data}data_test.pkl",
+                              f"{path_models}model_xgboost.pkl",
+                              f"{path_models}grid_xgboost.pkl",
+                              f"XGBoost"))
 
 summary_df = pd.DataFrame(results)
 logging.info(f"\nModel Evaluation Summary:\n{summary_df.to_string(index=False)}\n")

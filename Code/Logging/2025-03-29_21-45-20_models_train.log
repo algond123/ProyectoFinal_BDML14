@@ -1,0 +1,48 @@
+2025-03-29 21:45:22,543 - K-means Training (Get Clusters)
+2025-03-29 21:45:24,565 - Model saved to: ./Code/Models/model_kmeans.pkl
+2025-03-29 21:45:24,565 - Scaled labeled data saved to: ./Code/Data/data_scaled_labeled.pkl
+2025-03-29 21:45:24,565 - Completed in 2.02 seconds
+
+
+2025-03-29 21:45:24,566 - Splitting and saving train/test data
+2025-03-29 21:45:24,811 - Train data saved to: ./Code/Data/data_train.pkl
+2025-03-29 21:45:24,812 - Test data saved to: ./Code/Data/data_test.pkl
+2025-03-29 21:45:24,812 - Completed in 0.25 seconds
+
+
+2025-03-29 21:45:24,815 - Random Forest Model Training
+2025-03-29 21:49:15,612 - Model saved to: ./Code/Models/model_random_forest.pkl
+2025-03-29 21:49:15,613 - Grid saved to: ./Code/Models/grid_random_forest.pkl
+2025-03-29 21:49:15,613 - Completed in 230.80 seconds
+
+
+2025-03-29 21:49:15,616 - KNN Model Training
+2025-03-29 21:49:41,552 - Model saved to: ./Code/Models/model_knn.pkl
+2025-03-29 21:49:41,552 - Grid saved to: ./Code/Models/grid_knn.pkl
+2025-03-29 21:49:41,553 - Completed in 25.94 seconds
+
+
+2025-03-29 21:49:41,555 - Logistic Regression Model Training
+2025-03-29 21:49:50,762 - Model saved to: ./Code/Models/model_logistic_regression.pkl
+2025-03-29 21:49:50,762 - Grid saved to: ./Code/Models/grid_logistic_regression.pkl
+2025-03-29 21:49:50,762 - Completed in 9.21 seconds
+
+
+2025-03-29 21:49:50,764 - SVC Model Training
+2025-03-29 22:03:15,752 - Model saved to: ./Code/Models/model_svc.pkl
+2025-03-29 22:03:15,753 - Grid saved to: ./Code/Models/grid_svc.pkl
+2025-03-29 22:03:15,753 - Completed in 804.99 seconds
+
+
+2025-03-29 22:03:15,754 - Hist Gradient Boosting Model Training
+2025-03-29 22:06:01,606 - Model saved to: ./Code/Models/model_hist_gradient_boost.pkl
+2025-03-29 22:06:01,607 - Grid saved to: ./Code/Models/grid_hist_gradient_boost.pkl
+2025-03-29 22:06:01,607 - Completed in 165.85 seconds
+
+
+2025-03-29 22:06:01,611 - XGBoost Model Training
+2025-03-29 22:07:44,215 - Model saved to: ./Code/Models/model_xgboost.pkl
+2025-03-29 22:07:44,215 - Grid saved to: ./Code/Models/grid_xgboost.pkl
+2025-03-29 22:07:44,215 - Completed in 102.60 seconds
+
+

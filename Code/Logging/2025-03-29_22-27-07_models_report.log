@@ -1,0 +1,160 @@
+2025-03-29 22:27:07,953 - Evaluating Random Forest on test data
+2025-03-29 22:27:08,935 - Random Forest | Best Params: {'max_depth': 20, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 100}
+2025-03-29 22:27:08,935 - Random Forest | Best Grid Accuracy: 0.99939
+2025-03-29 22:27:08,936 - Random Forest | Test Accuracy: 0.99956
+2025-03-29 22:27:08,967 - Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     34180
+           1       1.00      1.00      1.00     20652
+           2       1.00      1.00      1.00     32394
+           3       1.00      1.00      1.00     30109
+
+    accuracy                           1.00    117335
+   macro avg       1.00      1.00      1.00    117335
+weighted avg       1.00      1.00      1.00    117335
+
+2025-03-29 22:27:08,974 - Confusion Matrix:
+        Pred 0  Pred 1  Pred 2  Pred 3
+True 0   34171       0       4       5
+True 1       0   20638       0      14
+True 2       9       0   32385       0
+True 3       3      17       0   30089
+2025-03-29 22:27:08,975 - Random Forest evaluation completed in 1.02 seconds 
+
+
+2025-03-29 22:27:08,979 - Evaluating KNN on test data
+2025-03-29 22:27:09,788 - KNN | Best Params: {'n_neighbors': 9, 'p': 2, 'weights': 'distance'}
+2025-03-29 22:27:09,789 - KNN | Best Grid Accuracy: 0.99928
+2025-03-29 22:27:09,789 - KNN | Test Accuracy: 0.99947
+2025-03-29 22:27:09,810 - Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     34180
+           1       1.00      1.00      1.00     20652
+           2       1.00      1.00      1.00     32394
+           3       1.00      1.00      1.00     30109
+
+    accuracy                           1.00    117335
+   macro avg       1.00      1.00      1.00    117335
+weighted avg       1.00      1.00      1.00    117335
+
+2025-03-29 22:27:09,815 - Confusion Matrix:
+        Pred 0  Pred 1  Pred 2  Pred 3
+True 0   34165       0       5      10
+True 1       0   20636       0      16
+True 2      11       0   32383       0
+True 3       6      14       0   30089
+2025-03-29 22:27:09,816 - KNN evaluation completed in 0.84 seconds 
+
+
+2025-03-29 22:27:09,820 - Evaluating Logistic Regression on test data
+2025-03-29 22:27:09,860 - Logistic Regression | Best Params: {'C': 10, 'penalty': 'l2', 'solver': 'lbfgs'}
+2025-03-29 22:27:09,861 - Logistic Regression | Best Grid Accuracy: 0.99919
+2025-03-29 22:27:09,861 - Logistic Regression | Test Accuracy: 0.99951
+2025-03-29 22:27:09,884 - Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     34180
+           1       1.00      1.00      1.00     20652
+           2       1.00      1.00      1.00     32394
+           3       1.00      1.00      1.00     30109
+
+    accuracy                           1.00    117335
+   macro avg       1.00      1.00      1.00    117335
+weighted avg       1.00      1.00      1.00    117335
+
+2025-03-29 22:27:09,888 - Confusion Matrix:
+        Pred 0  Pred 1  Pred 2  Pred 3
+True 0   34175       0       4       1
+True 1       0   20613       0      39
+True 2       0       0   32394       0
+True 3      13       0       0   30096
+2025-03-29 22:27:09,889 - Logistic Regression evaluation completed in 0.07 seconds 
+
+
+2025-03-29 22:27:09,891 - Evaluating SVC on test data
+2025-03-29 22:27:31,827 - SVC | Best Params: {'C': 10, 'kernel': 'linear'}
+2025-03-29 22:27:31,828 - SVC | Best Grid Accuracy: 0.99971
+2025-03-29 22:27:31,828 - SVC | Test Accuracy: 0.99986
+2025-03-29 22:27:31,849 - Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     34180
+           1       1.00      1.00      1.00     20652
+           2       1.00      1.00      1.00     32394
+           3       1.00      1.00      1.00     30109
+
+    accuracy                           1.00    117335
+   macro avg       1.00      1.00      1.00    117335
+weighted avg       1.00      1.00      1.00    117335
+
+2025-03-29 22:27:31,853 - Confusion Matrix:
+        Pred 0  Pred 1  Pred 2  Pred 3
+True 0   34176       0       3       1
+True 1       0   20646       0       6
+True 2       0       0   32394       0
+True 3       7       0       0   30102
+2025-03-29 22:27:31,854 - SVC evaluation completed in 21.96 seconds 
+
+
+2025-03-29 22:27:31,856 - Evaluating Hist Gradient Boost on test data
+2025-03-29 22:27:34,630 - Hist Gradient Boost | Best Params: {'learning_rate': 0.05, 'max_depth': 5, 'max_iter': 200}
+2025-03-29 22:27:34,630 - Hist Gradient Boost | Best Grid Accuracy: 0.99706
+2025-03-29 22:27:34,630 - Hist Gradient Boost | Test Accuracy: 0.99698
+2025-03-29 22:27:34,656 - Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     34180
+           1       1.00      1.00      1.00     20652
+           2       1.00      1.00      1.00     32394
+           3       1.00      1.00      1.00     30109
+
+    accuracy                           1.00    117335
+   macro avg       1.00      1.00      1.00    117335
+weighted avg       1.00      1.00      1.00    117335
+
+2025-03-29 22:27:34,661 - Confusion Matrix:
+        Pred 0  Pred 1  Pred 2  Pred 3
+True 0   34059       0      65      56
+True 1       0   20583       0      69
+True 2      59       0   32335       0
+True 3      53      52       0   30004
+2025-03-29 22:27:34,666 - Hist Gradient Boost evaluation completed in 2.81 seconds 
+
+
+2025-03-29 22:27:34,670 - Evaluating XGBoost on test data
+2025-03-29 22:27:35,043 - XGBoost | Best Params: {'learning_rate': 0.1, 'max_depth': 5, 'n_estimators': 200}
+2025-03-29 22:27:35,044 - XGBoost | Best Grid Accuracy: 0.99717
+2025-03-29 22:27:35,044 - XGBoost | Test Accuracy: 0.99722
+2025-03-29 22:27:35,076 - Classification Report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00     34180
+           1       1.00      1.00      1.00     20652
+           2       1.00      1.00      1.00     32394
+           3       1.00      1.00      1.00     30109
+
+    accuracy                           1.00    117335
+   macro avg       1.00      1.00      1.00    117335
+weighted avg       1.00      1.00      1.00    117335
+
+2025-03-29 22:27:35,089 - Confusion Matrix:
+        Pred 0  Pred 1  Pred 2  Pred 3
+True 0   34076       0      55      49
+True 1       0   20599       0      53
+True 2      54       0   32340       0
+True 3      53      62       0   29994
+2025-03-29 22:27:35,090 - XGBoost evaluation completed in 0.42 seconds 
+
+
+2025-03-29 22:27:35,096 - 
+Model Evaluation Summary:
+              Model  Best Grid Accuracy  Test Accuracy
+      Random Forest             0.99939        0.99956
+                KNN             0.99928        0.99947
+Logistic Regression             0.99919        0.99951
+                SVC             0.99971        0.99986
+Hist Gradient Boost             0.99706        0.99698
+            XGBoost             0.99717        0.99722
+
