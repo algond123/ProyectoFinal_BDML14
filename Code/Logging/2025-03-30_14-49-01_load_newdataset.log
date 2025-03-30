@@ -1,0 +1,4 @@
+2025-03-30 14:49:01,215 - Predict mood for all songs in the CSV dataset
+2025-03-30 14:49:28,458 - Mood predictions saved to: ./Code/Data/newdataset_labeled.pkl
+2025-03-30 14:49:28,459 - Scaled data with predictions saved to: ./Code/Data/newdataset_scaled_labeled.pkl
+2025-03-30 14:49:28,459 - Completed in 27.24 seconds
