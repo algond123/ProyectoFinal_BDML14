@@ -35,48 +35,80 @@ logging.basicConfig(
 
 
 # Process dataset
-def clean_normalize_dataset(input_csv: str, scaled_output_pkl: str, scaler_output_pkl: str):
+def clean_normalize_dataset(input_csv: str, scaled_output_pkl: str):
 
     start_time = time.time()
-    print(f"Clean and Normalize Dataset")
+    logging.info(f"Clean and Normalize Dataset")
 
     # Features
-    old_features = ['valence', 'energy', 'tempo', 'loudness', 'danceability']
-    new_features = ['valence', 'arousal']
+    old_features = ['energy','tempo','loudness','danceability','valence']
+    new_features = ['valence','arousal']
 
     # Load the data and clean it (drop missing values)
     df = pd.read_csv(input_csv)
+    #logging.info(f"Shape Before: {df.shape}")
+    #logging.info(f"Missing data before cleanup: {df[old_features].isnull().sum().sum()} entries.")
     df = df[old_features].dropna().copy()
+    #logging.info(f"Shape After: {df.shape}")
+    #logging.info(f"Original Data Description:\n{df.describe()}")
+    logging.info(f"First few rows of the scaled data:\n{df.head()}")
 
-    # Initialize and apply the MinMaxScaler
-    scaler = MinMaxScaler()  # Scaling features between 0 and 1
-    data_scaled = scaler.fit_transform(df)
-    
-    # Save the scaler for future use
-    joblib.dump(scaler, scaler_output_pkl)
+    # Initialize the data_scaled DataFrame
+    data_scaled = df.copy()
 
-    # Convert the scaled data back to a DataFrame
-    scaled_df = pd.DataFrame(data_scaled, columns=old_features)
+    # Define scaling ranges for specific features
+    scale_ranges = {
+        'tempo': (20, 200),
+        'loudness': (-60, 0),
+        'energy': (0, 1),
+        'danceability': (0, 1)
+    }
+
+    # Clip the tempo and loudness values to ensure they stay within the expected ranges
+    data_scaled['tempo'] = data_scaled['tempo'].clip(lower=20, upper=200)
+    data_scaled['loudness'] = data_scaled['loudness'].clip(lower=-60, upper=0)
+    data_scaled['energy'] = data_scaled['energy'].clip(lower=0, upper=1)
+    data_scaled['danceability'] = data_scaled['danceability'].clip(lower=0, upper=1)
+
+    # Apply MinMax scaling for each feature
+    for feature, (min_input, max_input) in scale_ranges.items():
+        min_output = 0
+        max_output = 1
+        data_scaled[feature] = (data_scaled[feature] - min_input) / (max_input - min_input) * (max_output - min_output) + min_output
+
+    # Round the values to 3 decimal places
+    data_scaled = data_scaled.round(3)
+
+    # Log the description after scaling
+    #logging.info(f"Scaled Data Description:\n{data_scaled.describe()}")
 
     # Define the weights for the features
-    alpha = 0.3
-    beta = 0.25
-    gamma = 0.25
-    delta = 0.2
+    alpha = 0.5  # Energy has more influence on arousal
+    beta = 0.25  # Tempo is still important, but less than energy
+    gamma = 0.2  # Loudness is less important, but still relevant
+    delta = 0.05  # Danceability plays the least role in arousal
     
     # Calculate the arousal score (weighted sum of selected features)
-    scaled_df['arousal'] = (alpha * scaled_df['energy']) + \
-                           (beta * scaled_df['tempo']) + \
-                           (gamma * scaled_df['loudness']) + \
-                           (delta * scaled_df['danceability'])
+    data_scaled['arousal'] = (alpha * data_scaled['energy']) + \
+                             (beta * data_scaled['tempo']) + \
+                             (gamma * data_scaled['loudness']) + \
+                             (delta * data_scaled['danceability'])
+    
+    # Round the values for arousal
+    data_scaled = data_scaled.round(3)
+
+    # Log the description after calculating arousal
+    #logging.info(f"Data with Arousal Score Description:\n{data_scaled.describe()}")
+    logging.info(f"First few rows of the scaled data:\n{data_scaled.head()}")
 
     # Select the relevant columns (valence and arousal)
-    scaled_df = scaled_df[new_features].dropna().copy()
+    scaled_df = data_scaled[new_features].dropna().copy()
+    logging.info(f"Shape Save: {df.shape}")
 
     # Save the cleaned and scaled DataFrame to a pickle file
     scaled_df.to_pickle(scaled_output_pkl)
 
-    print(f"Completed in {time.time() - start_time:.2f} seconds")
+    logging.info(f"Completed in {time.time() - start_time:.2f} seconds")
 
 # Kmeans Clustering
 def train_kmeans(scaled_input_pkl: str, scaled_labeled_output_pkl: str, model_output_pkl: str):
@@ -337,9 +369,9 @@ def train_xgboost(train_data_pkl: str, model_output_pkl: str, grid_output_pkl: s
 
 # Clean and Normalize dataset
 clean_normalize_dataset(f"{path_src}tracks.csv",
-                        f"{path_data}data_scaled.pkl",
-                        f"{path_data}scaler.pkl")
+                        f"{path_data}data_scaled.pkl")
 
+#'''
 # Train KMeans using scaled data
 train_kmeans(f"{path_data}data_scaled.pkl",
              f"{path_data}data_scaled_labeled.pkl",
@@ -350,7 +382,6 @@ save_train_and_test_data(f"{path_data}data_scaled_labeled.pkl",
                          f"{path_data}data_train.pkl",
                          f"{path_data}data_test.pkl")
 
-#'''
 # Train Random Forest using scaled labeled data
 train_random_forest(f"{path_data}data_train.pkl",
                     f"{path_models}model_random_forest.pkl",

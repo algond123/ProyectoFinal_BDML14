@@ -1,0 +1,65 @@
+2025-03-30 14:04:43,931 - Clean and Normalize Dataset
+2025-03-30 14:04:45,937 - First few rows of the scaled data:
+   energy    tempo  loudness  danceability  valence
+0  0.4450  104.851   -13.338         0.645    0.127
+1  0.2630  102.009   -22.136         0.695    0.655
+2  0.1770  130.418   -21.180         0.434    0.457
+3  0.0946  169.980   -27.961         0.321    0.397
+4  0.1580  103.220   -16.900         0.402    0.196
+2025-03-30 14:04:46,040 - First few rows of the scaled data:
+   energy  tempo  loudness  danceability  valence  arousal
+0   0.445  0.471     0.778         0.645    0.127    0.528
+1   0.263  0.456     0.631         0.695    0.655    0.406
+2   0.177  0.613     0.647         0.434    0.457    0.393
+3   0.095  0.833     0.534         0.321    0.397    0.379
+4   0.158  0.462     0.718         0.402    0.196    0.358
+2025-03-30 14:04:46,055 - Shape Save: (586672, 5)
+2025-03-30 14:04:46,060 - Completed in 2.13 seconds
+2025-03-30 14:04:46,063 - K-means Training (Get Clusters)
+2025-03-30 14:04:47,958 - Model saved to: ./Code/Models/model_kmeans.pkl
+2025-03-30 14:04:47,958 - Scaled labeled data saved to: ./Code/Data/data_scaled_labeled.pkl
+2025-03-30 14:04:47,959 - Completed in 1.90 seconds
+
+
+2025-03-30 14:04:47,959 - Splitting and saving train/test data
+2025-03-30 14:04:48,191 - Train data saved to: ./Code/Data/data_train.pkl
+2025-03-30 14:04:48,192 - Test data saved to: ./Code/Data/data_test.pkl
+2025-03-30 14:04:48,192 - Completed in 0.23 seconds
+
+
+2025-03-30 14:04:48,195 - Random Forest Model Training
+2025-03-30 14:07:30,526 - Model saved to: ./Code/Models/model_random_forest.pkl
+2025-03-30 14:07:30,526 - Grid saved to: ./Code/Models/grid_random_forest.pkl
+2025-03-30 14:07:30,527 - Completed in 162.33 seconds
+
+
+2025-03-30 14:07:30,530 - KNN Model Training
+2025-03-30 14:07:58,046 - Model saved to: ./Code/Models/model_knn.pkl
+2025-03-30 14:07:58,046 - Grid saved to: ./Code/Models/grid_knn.pkl
+2025-03-30 14:07:58,046 - Completed in 27.52 seconds
+
+
+2025-03-30 14:07:58,049 - Logistic Regression Model Training
+2025-03-30 14:08:07,797 - Model saved to: ./Code/Models/model_logistic_regression.pkl
+2025-03-30 14:08:07,798 - Grid saved to: ./Code/Models/grid_logistic_regression.pkl
+2025-03-30 14:08:07,799 - Completed in 9.75 seconds
+
+
+2025-03-30 14:08:07,800 - SVC Model Training
+2025-03-30 14:24:47,237 - Model saved to: ./Code/Models/model_svc.pkl
+2025-03-30 14:24:47,237 - Grid saved to: ./Code/Models/grid_svc.pkl
+2025-03-30 14:24:47,237 - Completed in 999.44 seconds
+
+
+2025-03-30 14:24:47,240 - Hist Gradient Boosting Model Training
+2025-03-30 14:27:41,869 - Model saved to: ./Code/Models/model_hist_gradient_boost.pkl
+2025-03-30 14:27:41,869 - Grid saved to: ./Code/Models/grid_hist_gradient_boost.pkl
+2025-03-30 14:27:41,870 - Completed in 174.63 seconds
+
+
+2025-03-30 14:27:41,873 - XGBoost Model Training
+2025-03-30 14:29:36,752 - Model saved to: ./Code/Models/model_xgboost.pkl
+2025-03-30 14:29:36,753 - Grid saved to: ./Code/Models/grid_xgboost.pkl
+2025-03-30 14:29:36,753 - Completed in 114.88 seconds
+
+
