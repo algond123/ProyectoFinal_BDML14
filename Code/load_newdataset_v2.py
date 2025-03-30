@@ -33,7 +33,7 @@ def predict_moods_from_file(input_data_csv: str, input_model_pkl: str, output_or
     cluster_to_mood = {
         0: 'Sadness/Depression',
         1: 'Joy/Excitement',
-        2: 'Anger/Fear',
+        2: 'Anger/Tense',
         3: 'Calmness/Relaxation'
     }
 
