@@ -14,7 +14,7 @@ k_optimal = 3
 #FEATURES = ['danceability','energy','loudness','speechiness','acousticness','instrumentalness','liveness','valence','tempo']
 #FEATURES = ['valence','energy','tempo','loudness','danceability','acousticness','instrumentalness','speechiness','liveness']
 
-FEATURES = ['valence','energy','danceability','tempo']
+FEATURES = ['valence','energy','tempo','loudness','danceability']
 #FEATURES = ['valence','energy','danceability','tempo','loudness', 'liveness','speechiness']
 #FEATURES = ['valence','energy','danceability','tempo','loudness', 'liveness','speechiness','acousticness','instrumentalness']
 
