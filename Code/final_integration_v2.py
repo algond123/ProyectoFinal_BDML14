@@ -253,15 +253,17 @@ def whatsapp():
         currentMood = recommend_music_mood(detected_mood, incoming_msg, conversation)
 
         if currentMood != "Undetected":
-            current_state = Status.GET_MOOD_USR
+            current_state = Status.END
             user_response = recommend_tack(detected_mood, detected_mood_music, incoming_msg, conversation)
 
     else:
         user_response = None
 
-    if current_state == Status.GET_MOOD_USR  or current_state == Status.GET_MOOD_SONG:
+    if (current_state == Status.GET_MOOD_USR)  or (current_state == Status.GET_MOOD_SONG):
         conversation.append({"role": "user", "content": incoming_msg})
         conversation.append({"role": "assistant", "content": user_response})
+    else:
+        conversation.clear()
 
     #Prepare the Whatsapp response
     resp = MessagingResponse()
