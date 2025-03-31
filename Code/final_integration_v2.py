@@ -1,14 +1,18 @@
-from openai import OpenAI
-from flask import Flask, request
-from twilio.twiml.messaging_response import MessagingResponse
-import os
 import pandas as pd
 import numpy as np
-import time
-import ast
+
+from openai import OpenAI
+from twilio.twiml.messaging_response import MessagingResponse
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from google.cloud import dialogflow_v2 as dialogflow
+#from google.cloud import dialogflow_v2 as dialogflow
+from flask import Flask, request
+
+import time
+import ast
+import sys
+import os
+from enum import Enum
 
 from access_credentials import chatgpt_api_key
 from access_credentials import dialogflow_api_key
@@ -32,6 +36,8 @@ def detect_intent_texts(text):
     return response.query_result.fulfillment_text
 '''
 
+###
+
 client = OpenAI(
   api_key = chatgpt_api_key
   #api_key="xxx"
@@ -42,9 +48,24 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id = spotify_client_id,
                                                redirect_uri = 'http://127.0.0.1:8888/callback',
                                                scope = 'user-library-read'))
 
-spotify_df = pd.read_csv('filtered_tracks_with_artists.csv')
+spotify_df = pd.read_csv('./Code/Data/dataset_new_labeled.csv')
+
+###
+
+class Status(Enum):
+    START = 0
+    GET_MOOD_USR = 0
+    GET_MOOD_SONG = 1
+    END = 3
+
+current_state = Status.GET_MOOD_USR
+
+detected_mood = None
+detected_mood_music = None
 
 RECOMMEND_SONGS = 10
+
+fsm = 0
 
 conversation = []
 
@@ -207,12 +228,9 @@ def recommend_tack(detected_mood, detected_mood_music, message, conversation_his
 
 @app.route("/whatsapp", methods=['POST'])
 def whatsapp():
-    global confirmation_mood_music
-    global confirmation_mood
-    global detected_mood_music
+    global current_state
     global detected_mood
-    global last_mood
-    global mood_cntr
+    global detected_mood_music
 
     #User Whatsapp Message
     incoming_msg = request.values.get('Body', '').strip()
@@ -220,55 +238,30 @@ def whatsapp():
 
     user_response = None
 
-    #Understand the Mood
-    if confirmation_mood == False:
-        #User Interaction and User Analysis
-        response_msg = create_message(incoming_msg, conversation)
+    if current_state == Status.GET_MOOD_USR:
+        #User Interaction and User Mood Analysis
+        user_response = create_message(incoming_msg, conversation)
         currentMood = mood_analysis(incoming_msg, conversation)
-        #currentMood = detect_intent_texts(incoming_msg)
 
         if currentMood != "Undetected":
-            mood_cntr += 1
+            current_state = Status.GET_MOOD_SONG
+            user_response = create_message_music(detected_mood, incoming_msg, conversation)
 
-        if(mood_cntr == TRY_MOOD_NUM):
-            print(f"Mood Detected")
-            confirmation_mood = True
-            detected_mood = currentMood
-            response_msg = create_message_music(detected_mood, incoming_msg, conversation)
-            last_mood = None
-            mood_cntr = 0
-
-        # Save conversation history
-        conversation.append({"role": "user", "content": incoming_msg})
-        conversation.append({"role": "assistant", "content": response_msg})
-
-        print(f"bot_1: {response_msg}, MoodAnalysis: {currentMood}")
-
-        user_response = response_msg
-    else:
-        #User Interaction and User Analysis
-        response_msg = create_message_music(detected_mood, incoming_msg, conversation)
+    elif current_state == Status.GET_MOOD_SONG:
+        #User Interaction and User Music Mood Analysis
+        user_response = create_message_music(detected_mood, incoming_msg, conversation)
         currentMood = recommend_music_mood(detected_mood, incoming_msg, conversation)
 
         if currentMood != "Undetected":
-            mood_cntr += 1
+            current_state = Status.GET_MOOD_USR
+            user_response = recommend_tack(detected_mood, detected_mood_music, incoming_msg, conversation)
 
-        if(mood_cntr == TRY_MOOD_NUM):
-            print(f"Mood Music Detected")
-            confirmation_mood_music = True
-            detected_mood_music = currentMood
-            response_msg = recommend_tack(detected_mood, detected_mood_music, incoming_msg, conversation)
-            print(f"{get_random_song_by_mood(detected_mood_music)}")
-            last_mood = None
-            mood_cntr = 0
+    else:
+        user_response = None
 
-        # Save conversation history
+    if current_state == Status.GET_MOOD_USR  or current_state == Status.GET_MOOD_SONG:
         conversation.append({"role": "user", "content": incoming_msg})
-        conversation.append({"role": "assistant", "content": response_msg})
-
-        print(f"bot_2: {response_msg}, MoodAnalysis: {currentMood}")
-
-        user_response = response_msg
+        conversation.append({"role": "assistant", "content": user_response})
 
     #Prepare the Whatsapp response
     resp = MessagingResponse()
