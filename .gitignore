@@ -2,3 +2,5 @@
 *.pkl
 *.csv
 Code/access_credentials.py
+*.pyc
+.cache

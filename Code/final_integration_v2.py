@@ -65,8 +65,6 @@ detected_mood_music = None
 
 RECOMMEND_SONGS = 10
 
-fsm = 0
-
 conversation = []
 
 ###
@@ -263,6 +261,8 @@ def whatsapp():
         conversation.append({"role": "user", "content": incoming_msg})
         conversation.append({"role": "assistant", "content": user_response})
     else:
+        detected_mood = None
+        detected_mood_music = None
         conversation.clear()
 
     #Prepare the Whatsapp response
