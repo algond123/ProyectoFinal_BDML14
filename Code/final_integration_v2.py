@@ -1,5 +1,4 @@
 from openai import OpenAI
-from google.cloud import dialogflow_v2 as dialogflow
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 import os
@@ -9,41 +8,41 @@ import time
 import ast
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+from google.cloud import dialogflow_v2 as dialogflow
+
+from access_credentials import chatgpt_api_key
+from access_credentials import dialogflow_api_key
+from access_credentials import spotify_client_id
+from access_credentials import spotify_client_secret
 
 app = Flask(__name__)
 
-###
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'keepcoding-436818-135edd98c682.json'
-
-client = OpenAI(
-  api_key="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"
-)
-
+#The trained is not working ok on Dialogflow
+'''
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = dialogflow_api_key
 session_client = dialogflow.SessionsClient()
 session = session_client.session_path('keepcoding-436818', 'duver321')
+def detect_intent_texts(text):
+    text_input = dialogflow.TextInput(text=text, language_code='en')
+    query_input = dialogflow.QueryInput(text=text_input)
 
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="3261e217b565417eb36d76c5e369c850",
-                                               client_secret="19561b0996ac4b29adaaa7afd5f90ac5",
-                                               redirect_uri="http://127.0.0.1:8888/callback",
-                                               scope="user-library-read"))
+    response = session_client.detect_intent(request={'session': session, 'query_input': query_input})
+
+    return response.query_result.fulfillment_text
+'''
+
+client = OpenAI(
+  api_key = chatgpt_api_key
+  #api_key="xxx"
+)
+
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id = spotify_client_id,
+                                               client_secret = spotify_client_secret,
+                                               redirect_uri = 'http://127.0.0.1:8888/callback',
+                                               scope = 'user-library-read'))
 
 spotify_df = pd.read_csv('filtered_tracks_with_artists.csv')
-
-confirmation_mood = False
-confirmation_mood_music = False
-detected_mood = None
-detected_mood_music = None
-last_mood = None
-mood_cntr = 0
-
-TRY_MOOD_NUM = 1
-
-
-#to delete
-spotify_link = 'https://open.spotify.com/track/7iXYRR70wewzVYzWScm99j'
-song_name = 'Gonna Fly Now'
-song_artist = 'Bill Conti'
 
 RECOMMEND_SONGS = 10
 
@@ -203,16 +202,6 @@ def recommend_tack(detected_mood, detected_mood_music, message, conversation_his
     )
 
     return response.choices[0].message.content.strip()
-
-
-#The trained is not working ok on Dialogflow
-def detect_intent_texts(text):
-    text_input = dialogflow.TextInput(text=text, language_code='en')
-    query_input = dialogflow.QueryInput(text=text_input)
-
-    response = session_client.detect_intent(request={'session': session, 'query_input': query_input})
-
-    return response.query_result.fulfillment_text
 
 ###
 
