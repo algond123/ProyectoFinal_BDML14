@@ -29,7 +29,7 @@ spotify_df = pd.read_csv('./Code/Data/newdataset_labeled.csv')
 
 ###
 detected_mood = None
-detected_mood_music = 'Sadness/Depression'
+detected_mood_music = None
 
 RECOMMEND_SONGS = 10
 ###
@@ -48,9 +48,9 @@ def get_spotify_link(track_name, artist_name):
         print(f"Error fetching data for {track_name} by {artist_name}: {e}")
         return "Error"
     
-def create_spotify_playlist(track_ids):
+def create_spotify_playlist(track_ids, mood_input):
 
-    name = 'pl_proj_mood_n1'
+    name = 'pl_proj_mood_' + mood_input
     user_id = sp.current_user()['id']
     playlist = sp.user_playlist_create(user=user_id, name=name, public=True)
     sp.playlist_add_items(playlist_id=playlist['id'], items=track_ids)
@@ -97,24 +97,17 @@ def recommend_songs_by_mood(df, mood_input, list_size=10, popularity_pool=10):
 
     return recommendations
 
+detected_mood_music = 'Sadness/Depression'
 
 # 1. Recommend songs
-print(f"\n\nSadness/Depression\n")
-songs = recommend_songs_by_mood(spotify_df, 'Sadness/Depression', 10, 100)
+print(f"{detected_mood_music}")
+songs = recommend_songs_by_mood(spotify_df, detected_mood_music, 10, 100)
 
-# 2. Print recommendations
-for i, song in enumerate(songs, 1):
-    print(f"{i}. {song['artist']} – {song['track_name']} (Popularity: {song['popularity']})")
-    print(f"   🎧 {song['spotify_link']}")
-
-# 3. Extract track IDs
+# 2. Extract track IDs
 track_ids = [song['track_id'] for song in songs]
 
-# 4. Get user ID
-user_id = sp.current_user()['id']
-
-# 5. Create and fill playlist
-playlist_url = create_spotify_playlist(track_ids)
+# 3. Create and fill playlist
+playlist_url = create_spotify_playlist(track_ids, detected_mood_music)
 
 print("🎶 Playlist created:")
 print(playlist_url)
