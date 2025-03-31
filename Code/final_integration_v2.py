@@ -1,0 +1,294 @@
+from openai import OpenAI
+from google.cloud import dialogflow_v2 as dialogflow
+from flask import Flask, request
+from twilio.twiml.messaging_response import MessagingResponse
+import os
+import pandas as pd
+import numpy as np
+import time
+import ast
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+
+app = Flask(__name__)
+
+###
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'keepcoding-436818-135edd98c682.json'
+
+client = OpenAI(
+  api_key="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"
+)
+
+session_client = dialogflow.SessionsClient()
+session = session_client.session_path('keepcoding-436818', 'duver321')
+
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="3261e217b565417eb36d76c5e369c850",
+                                               client_secret="19561b0996ac4b29adaaa7afd5f90ac5",
+                                               redirect_uri="http://127.0.0.1:8888/callback",
+                                               scope="user-library-read"))
+
+spotify_df = pd.read_csv('filtered_tracks_with_artists.csv')
+
+confirmation_mood = False
+confirmation_mood_music = False
+detected_mood = None
+detected_mood_music = None
+last_mood = None
+mood_cntr = 0
+
+TRY_MOOD_NUM = 1
+
+
+#to delete
+spotify_link = 'https://open.spotify.com/track/7iXYRR70wewzVYzWScm99j'
+song_name = 'Gonna Fly Now'
+song_artist = 'Bill Conti'
+
+RECOMMEND_SONGS = 10
+
+conversation = []
+
+###
+
+def get_spotify_link(track_name, artist_name):
+    query = f"track:{track_name} artist:{artist_name}"
+    try:
+        result = sp.search(query, type='track', limit=1)
+        
+        if result['tracks']['items']:
+            track = result['tracks']['items'][0]
+            return track['external_urls']['spotify']
+        else:
+            return "Track Not Found."
+    except Exception as e:
+        print(f"Error fetching data for {track_name} by {artist_name}: {e}")
+        return "Error"
+
+def get_random_song_by_mood(mood_label):
+    # Filter songs with the given mood
+    filtered_df = spotify_df[spotify_df['mood_label'].str.lower() == mood_label.lower()]
+    
+    # Check if any song matches the mood
+    if filtered_df.empty:
+        return f"Track Not Found."
+
+    # Pick a random row
+    song = filtered_df.sample(n=1).iloc[0]
+    name_track = song['name_tracks']
+    name_artist = song['name_artists']
+    
+    return get_spotify_link(name_track, name_artist)
+
+def create_message(message, conversation_history=None):
+    if conversation_history is None:
+        conversation_history = []
+
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are a friendly assistant trained to understand the user's mood "
+                "through casual and supportive conversation. "
+                "Ask follow-up questions to gently confirm how the user is feeling."
+            )
+        },
+        *conversation_history,
+        {"role": "user", "content": message}
+    ]
+
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=messages
+    )
+
+    return response.choices[0].message.content
+
+def mood_analysis(message, conversation_history=None):
+    if conversation_history is None:
+        conversation_history = []
+
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "Analyze the user's message and respond with only one word "
+                "indicating the detected mood: Party, Melancholic, Joyful, Sad, Motivating, Relaxed, or Undetected."
+            )
+        },
+        *conversation_history,
+        {"role": "user", "content": message}
+    ]
+
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=messages
+    )
+
+    return response.choices[0].message.content
+
+def create_message_music(detected_mood, message, conversation_history=None):
+    if conversation_history is None:
+        conversation_history = []
+
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                f"You are a friendly and conversational assistant that helps users choose the kind of music they want to listen to. "
+                f"The user is currently feeling '{detected_mood}'. Based on that and the conversation so far, "
+                "have a natural and empathetic dialogue to discover what kind of music mood they would prefer right now. "
+                "You are not classifying the music mood yourself — your goal is to guide the conversation and understand the user's preference. "
+                "The available music moods are: Party, Melancholic, Joyful, Sad, Motivating or Relaxed"
+                "Make the interaction feel human, supportive, and casual."
+            )
+        },
+        *conversation_history,
+        {"role": "user", "content": message}
+    ]
+
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=messages
+    )
+
+    return response.choices[0].message.content
+
+def recommend_music_mood(detected_mood, message, conversation_history=None):
+    if conversation_history is None:
+        conversation_history = []
+
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                f"The user is currently feeling '{detected_mood}'. "
+                "Based on this and the conversation history, determine what type of music mood they would prefer. "
+                "Respond with only one with one word of the following: Party, Melancholic, Joyful, Sad, Motivating, Relaxed, or Undetected."
+            )
+        },
+        *conversation_history,
+        {"role": "user", "content": message}
+    ]
+
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=messages
+    )
+
+    return response.choices[0].message.content.strip()
+
+def recommend_tack(detected_mood, detected_mood_music, message, conversation_history=None):
+    if conversation_history is None:
+        conversation_history = []
+
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are a kind and empathetic assistant. "
+                f"The user is currently feeling '{detected_mood}', but they prefer to listen to '{detected_mood_music}' music right now. "
+                "Based on this and the conversation history, write a warm, natural, and supportive message. "
+                f"You Must recommend this song {song_name} - {song_artist} with the Spotify track link ({spotify_link}) as a recommendation that matches their preferred music mood. "
+                "Make it feel personal and encouraging, not robotic."
+            )
+        },
+        *conversation_history,
+        {"role": "user", "content": message}
+    ]
+
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=messages
+    )
+
+    return response.choices[0].message.content.strip()
+
+
+#The trained is not working ok on Dialogflow
+def detect_intent_texts(text):
+    text_input = dialogflow.TextInput(text=text, language_code='en')
+    query_input = dialogflow.QueryInput(text=text_input)
+
+    response = session_client.detect_intent(request={'session': session, 'query_input': query_input})
+
+    return response.query_result.fulfillment_text
+
+###
+
+@app.route("/whatsapp", methods=['POST'])
+def whatsapp():
+    global confirmation_mood_music
+    global confirmation_mood
+    global detected_mood_music
+    global detected_mood
+    global last_mood
+    global mood_cntr
+
+    #User Whatsapp Message
+    incoming_msg = request.values.get('Body', '').strip()
+    #from_number = request.values.get('From', '')
+
+    user_response = None
+
+    #Understand the Mood
+    if confirmation_mood == False:
+        #User Interaction and User Analysis
+        response_msg = create_message(incoming_msg, conversation)
+        currentMood = mood_analysis(incoming_msg, conversation)
+        #currentMood = detect_intent_texts(incoming_msg)
+
+        if currentMood != "Undetected":
+            mood_cntr += 1
+
+        if(mood_cntr == TRY_MOOD_NUM):
+            print(f"Mood Detected")
+            confirmation_mood = True
+            detected_mood = currentMood
+            response_msg = create_message_music(detected_mood, incoming_msg, conversation)
+            last_mood = None
+            mood_cntr = 0
+
+        # Save conversation history
+        conversation.append({"role": "user", "content": incoming_msg})
+        conversation.append({"role": "assistant", "content": response_msg})
+
+        print(f"bot_1: {response_msg}, MoodAnalysis: {currentMood}")
+
+        user_response = response_msg
+    else:
+        #User Interaction and User Analysis
+        response_msg = create_message_music(detected_mood, incoming_msg, conversation)
+        currentMood = recommend_music_mood(detected_mood, incoming_msg, conversation)
+
+        if currentMood != "Undetected":
+            mood_cntr += 1
+
+        if(mood_cntr == TRY_MOOD_NUM):
+            print(f"Mood Music Detected")
+            confirmation_mood_music = True
+            detected_mood_music = currentMood
+            response_msg = recommend_tack(detected_mood, detected_mood_music, incoming_msg, conversation)
+            print(f"{get_random_song_by_mood(detected_mood_music)}")
+            last_mood = None
+            mood_cntr = 0
+
+        # Save conversation history
+        conversation.append({"role": "user", "content": incoming_msg})
+        conversation.append({"role": "assistant", "content": response_msg})
+
+        print(f"bot_2: {response_msg}, MoodAnalysis: {currentMood}")
+
+        user_response = response_msg
+
+    #Prepare the Whatsapp response
+    resp = MessagingResponse()
+    msg = resp.message()
+    msg.body(user_response)
+
+    return str(resp)
+
+###
+
+if __name__ == "__main__":
+    app.run(debug=True, port=8888)
