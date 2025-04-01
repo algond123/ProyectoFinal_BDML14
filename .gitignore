@@ -4,3 +4,4 @@
 Code/access_credentials.py
 *.pyc
 .cache
+*.mp4

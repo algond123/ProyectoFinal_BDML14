@@ -16,7 +16,7 @@ import logging
 from enum import Enum
 
 from access_credentials import chatgpt_api_key
-from access_credentials import dialogflow_api_key
+#from access_credentials import dialogflow_api_key
 from access_credentials import spotify_client_id
 from access_credentials import spotify_client_secret
 
@@ -144,9 +144,9 @@ def recommend_songs_by_mood(df, mood_input, list_size=10, popularity_pool=30):
 
     return recommendations
 
-def create_spotify_playlist(track_ids, mood_input):
+def create_spotify_playlist(track_ids):
 
-    name = 'pl_proj_mood_' + mood_input
+    name = 'Melody Miners Recommendations'
     user_id = sp.current_user()['id']
     playlist = sp.user_playlist_create(user=user_id, name=name, public=True)
     sp.playlist_add_items(playlist_id=playlist['id'], items=track_ids)
@@ -275,7 +275,7 @@ def whatsapp():
                 conv_music_mood = mood_keywords.get(detected_mood_music, None)
                 songs = recommend_songs_by_mood(spotify_df, conv_music_mood, PLAYLIST_SIZE, TOP_POPULARITY)
                 track_ids = [song['track_id'] for song in songs]
-                playlist_url = create_spotify_playlist(track_ids, conv_music_mood)
+                playlist_url = create_spotify_playlist(track_ids)
                 print(f"Playlist Url: {playlist_url}")
 
                 bot_msg = gpt_chatbot_response(Prompt.USR_CHAT_PLAYLIST_RECOMMENDATION, user_msg, conversation, detected_mood_user, detected_mood_music, playlist_url)
