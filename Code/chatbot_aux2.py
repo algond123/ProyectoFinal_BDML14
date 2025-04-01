@@ -6,8 +6,9 @@ from twilio.twiml.messaging_response import MessagingResponse
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 #from google.cloud import dialogflow_v2 as dialogflow
-from flask import Flask, request
 
+from flask import Flask, request
+import logging
 import time
 import ast
 import sys
@@ -19,9 +20,11 @@ from access_credentials import dialogflow_api_key
 from access_credentials import spotify_client_id
 from access_credentials import spotify_client_secret
 
+#logging.basicConfig(level=logging.DEBUG)
+
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id = spotify_client_id,
                                                client_secret = spotify_client_secret,
-                                               redirect_uri = 'http://127.0.0.1:8888/callback',
+                                               redirect_uri = 'http://127.0.0.1:8888/spotify',
                                                scope = 'playlist-modify-public'))
 
 # Load your CSV data
@@ -105,10 +108,12 @@ detected_mood_music = 'Sadness/Depression'
 print(f"{detected_mood_music}")
 songs = recommend_songs_by_mood(spotify_df, detected_mood_music, 10, 100)
 
+'''
 # 2. Print recommendation
 for i, song in enumerate(songs, 1):
     print(f"{i}. {song['artist']} – {song['track_name']} (Popularity: {song['popularity']})")
     print(f"   🎧 {song['spotify_link']}")
+'''
 
 # 3. Extract track IDs
 track_ids = [song['track_id'] for song in songs]
