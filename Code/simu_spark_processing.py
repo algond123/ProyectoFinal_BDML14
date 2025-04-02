@@ -8,11 +8,11 @@ spark = SparkSession.builder \
     .master("local[*]") \
     .config("spark.security.manager", "false") \
     .config("spark.hadoop.security.manager", "None") \
-    .config("spark.driver.extraClassPath", "./Code/libs/sqlite-jdbc.jar") \
+    .config("spark.driver.extraClassPath", "./libs/sqlite-jdbc.jar") \
     .getOrCreate()
 
 # Leer desde SQLite
-jdbc_url = "jdbc:sqlite:./Code/Data/spotify_data.db"
+jdbc_url = "jdbc:sqlite:./Data/spotify_data.db"
 
 df = spark.read \
     .format("jdbc") \
@@ -60,11 +60,11 @@ df.printSchema()
 df.select("arousal", "valence", "energy", "tempo", "loudness", "danceability", "valence").show(10)
 
 # 1. **Metrics for All Columns**
-print("\n📊 Metrics for All Columns:")
+print("\nMetrics for All Columns:")
 df.describe().show()
 
 # 2. **Metrics for Selected Features**
-print("\n📊 Metrics for Selected Features:")
+print("\nMetrics for Selected Features:")
 df.select("energy", "tempo", "loudness", "danceability", "arousal", "valence").describe().show()
 
 # 3. **Correlation between energy and arousal**
@@ -119,8 +119,10 @@ print("\nMin and Max values of each feature:")
 min_max_values.show()
 
 # 10. **Final Statistics for arousal and valence**
-print("\n📈 Final Statistics for Arousal and Valence:")
+print("\nFinal Statistics for Arousal and Valence:")
 df.select("arousal", "valence").describe().show()
+
+print("Save on spark_arousal_valence_output.csv")
 
 # Guardar (opcional)
 df.select("arousal", "valence") \

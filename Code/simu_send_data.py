@@ -7,9 +7,9 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-df = pd.read_csv('./Code/Source/cancionesSpotify.csv') # executed from powershell 
+df = pd.read_csv('./Source/cancionesSpotify.csv') # executed from powershell 
 
-for index, row in df.head(20).iterrows():
+for index, row in df.head(100).iterrows():
     json_data = row.to_dict()
     
     print(f"Enviando registro {index + 1}...")

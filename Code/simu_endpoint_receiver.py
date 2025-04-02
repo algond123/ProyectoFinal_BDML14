@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 
-DB_PATH = './Code/Data/spotify_data.db'
+DB_PATH = './Data/spotify_data.db'
 
 def init_db():
     with sqlite3.connect(DB_PATH) as conn:
@@ -46,7 +46,7 @@ def ingest_data():
     if not data:
         return jsonify({"status": "error", "message": "No se recibieron datos"}), 400
 
-    with sqlite3.connect('./Code/Data/spotify_data.db') as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT 1 FROM tracks WHERE track_id = ?", (data['track_id'],))
         exists = cursor.fetchone()
@@ -73,7 +73,7 @@ def ingest_data():
             logging.error("Error al insertar en la base de datos: %s", e)
             return jsonify({"status": "error", "message": str(e)}), 500
 
-    return jsonify({"status": "success", "message": "Canción insertada correctamente"}), 200
+    return jsonify({"status": "success", "message": f"Canción insertada correctamente y guardada en la base de datos {DB_PATH}"}), 200
 
 
 if __name__ == '__main__':
