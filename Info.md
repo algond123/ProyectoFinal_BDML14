@@ -37,11 +37,6 @@
 ### 1. **Selección del Dataset**
 
 - **Objetivo**: Elegir el dataset principal entre las opciones proporcionadas o proponer otro (requiere aprobación).
-
-Datasets escogidos ->
-https://www.kaggle.com/datasets/salvatorerastelli/spotify-and-youtube
-https://www.kaggle.com/datasets/yamaerenay/spotify-dataset-19212020-600k-tracks/data
-
 - **Subtareas**:
   - Elegir un dataset relacionado con redes sociales, IMDB, Open Street Maps, salud, bioinformática, entre otros.
   - Cruzar el dataset con al menos otra fuente de datos.
