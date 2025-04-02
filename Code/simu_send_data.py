@@ -3,14 +3,17 @@
 import pandas as pd
 import requests
 import time
+import logging
 
-df = pd.read_csv('./Code/Source/cancionesSpotify.csv' )
+logging.basicConfig(level=logging.DEBUG)
 
-for index, row in df.head(5).iterrows():
+df = pd.read_csv('./Code/Source/cancionesSpotify.csv') # executed from powershell 
+
+for index, row in df.head(20).iterrows():
     json_data = row.to_dict()
     
     print(f"Enviando registro {index + 1}...")
-    response = requests.post("http://localhost:5000/ingest", json=json_data)
+    response = requests.post("http://localhost:8888/ingest", json=json_data)
 
     try:
         print(response.json())
