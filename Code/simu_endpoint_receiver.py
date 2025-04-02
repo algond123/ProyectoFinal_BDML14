@@ -1,4 +1,3 @@
-# app/endpoint_receiver.py
 
 from flask import Flask, request, jsonify
 import sqlite3
@@ -6,11 +5,10 @@ import os
 import json
 
 app = Flask(__name__)
-DB_PATH = "data/spotify_data.db"
 
 # Crear tabla si no existe
 def init_db():
-    with sqlite3.connect(DB_PATH) as conn:
+    with sqlite3.connect('./Code/Data/spotify_data.db') as conn:
         conn.execute('''
             CREATE TABLE IF NOT EXISTS tracks (
                 id TEXT PRIMARY KEY,
@@ -43,7 +41,7 @@ def ingest_data():
         return jsonify({"status": "error", "message": "No se recibieron datos"}), 400
 
     # Insertar en SQLite
-    with sqlite3.connect(DB_PATH) as conn:
+    with sqlite3.connect('./Code/Data/spotify_data.db') as conn:
         cursor = conn.cursor()
         try:
             cursor.execute('''
