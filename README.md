@@ -2,22 +2,22 @@
 
 ---
 
-# Estructura del Repositorio
+## Estructura del Repositorio
 
 Este repositorio contiene diversos archivos y carpetas organizados para el desarrollo del proyecto. A continuación se describe la estructura del repositorio:
 
-## Carpetas
+### Carpetas
 
-- **Code**: Contiene los archivos de código fuente del proyecto.
-- **Data**: Carpeta que incluye los datos necesarios para la ejecución y pruebas del proyecto.
+- **RawData**: Contiene los datos originales o crudos, antes de cualquier procesamiento.
+- **ProcessedData**: Contiene los datos procesados o generados a partir de los modelos de Machine Learning, como los datos limpios, transformados o enriquecidos.
 - **Images**: Almacena imágenes utilizadas en el proyecto o para la documentación.
 - **InfoProyecto**: Contiene archivos relacionados con la información del proyecto, como documentos y presentaciones.
-- **Models**: Carpeta destinada a los modelos utilizados o generados durante el desarrollo.
-- **Source**: Archivos principales de programación que definen la lógica central del proyecto.
+- **ModelsOutput**: Carpeta destinada a los resultados generados por los modelos de Machine Learning, como predicciones, métricas, o cualquier otro output del modelo.
+- **Code**: Archivos principales de programación que definen la lógica central del proyecto.
 - **Videos**: Archivos de video relacionados con el proyecto.
-- **powerBI**: Archivos asociados a los análisis y dashboards en Power BI.
+- **PowerBI**: Archivos asociados a los análisis y dashboards en Power BI.
 
-## Archivos
+### Archivos
 
 - **.gitignore**: Archivo que especifica qué archivos o carpetas deben ser ignorados por Git.
 - **Info.md**: Documento que contiene información general sobre el proyecto.
@@ -26,12 +26,25 @@ Este repositorio contiene diversos archivos y carpetas organizados para el desar
 - **README.md**: Este archivo con la descripción y estructura del repositorio.
 - **code_chatbot.ipynb**: Notebook de Jupyter relacionado con el desarrollo del chatbot.
 - **code_proyecto.ipynb**: Notebook con el código principal del proyecto.
+- **code_simulacion_sql_spark.ipynb**: Notebook relacionado con la simulación utilizando SQL y Spark.
 - **code_simu_StorageIngestMetrics.ipynb**: Notebook relacionado con la simulación del Almacenamiento, Ingesta y Métricas, utilizando REST, SQLite y PySpark.
 
-## Descripción Adicional
+### Descripción Adicional
 
 Cada carpeta y archivo está organizado para facilitar la navegación y la colaboración dentro del proyecto. La carpeta **Code** y los notebooks contienen el código fuente, mientras que las carpetas de datos, imágenes, y videos permiten la inclusión de recursos y materiales de apoyo. Los archivos de Power BI están organizados por análisis específicos que se realizan sobre los datos.
 
-Si tienes alguna pregunta sobre cómo usar el repositorio o necesitas más detalles sobre algún archivo, no dudes en contactar a los Melody Miners.
+Si tienes alguna pregunta sobre cómo usar el repositorio o necesitas más detalles sobre algún archivo, no dudes en contactar al stuff de Melody  **Miners**.
+
+---
+
+## Plan General - Proyecto Final
+
+![image.png](./Images/PlanGeneral.png)
+
+---
+
+## Simulacion Arquitectura del Flujo de Datos: Envío, Almacenamiento y Procesamiento
+
+![image.png](./Images/Simulacion.png)
 
 ---
