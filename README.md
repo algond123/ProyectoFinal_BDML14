@@ -2,10 +2,6 @@
 
 ---
 
-## Datasets del proyecto
-
----
-
 ## Estructura del Repositorio
 
 Este repositorio contiene diversos archivos y carpetas organizados para el desarrollo del proyecto. A continuación se describe la estructura del repositorio:
