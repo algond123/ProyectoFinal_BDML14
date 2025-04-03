@@ -7,3 +7,4 @@ Code/access_credentials.py
 *.mp4
 *.jar
 *.db
+*.bkp
