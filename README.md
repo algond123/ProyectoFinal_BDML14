@@ -1,4 +1,8 @@
-# ProyectoFinal BigData ML14 - Melody Miners
+# ProyectoFinal BigData MachineLearning 14 - Melody Miners
+
+---
+
+## Datasets del proyecto
 
 ---
 
@@ -16,6 +20,7 @@ Este repositorio contiene diversos archivos y carpetas organizados para el desar
 - **Code**: Archivos principales de programación que definen la lógica central del proyecto.
 - **Videos**: Archivos de video relacionados con el proyecto.
 - **PowerBI**: Archivos asociados a los análisis y dashboards en Power BI.
+- **Diagramas**: Contiene los diagramas de arquitectura del código creados con **Draw.io** para ilustrar la estructura y el flujo del proyecto.
 
 ### Archivos
 
@@ -29,6 +34,13 @@ Este repositorio contiene diversos archivos y carpetas organizados para el desar
 - **code_simulacion_sql_spark.ipynb**: Notebook relacionado con la simulación utilizando SQL y Spark.
 - **code_simu_StorageIngestMetrics.ipynb**: Notebook relacionado con la simulación del Almacenamiento, Ingesta y Métricas, utilizando REST, SQLite y PySpark.
 
+## Datasets del Proyecto
+
+Los datasets utilizados en este proyecto se pueden obtener desde los siguientes enlaces:
+
+1. [Spotify Dataset (1921-2020, 600k tracks)](https://www.kaggle.com/datasets/yamaerenay/spotify-dataset-19212020-600k-tracks/)
+2. [Spotify Tracks Dataset](https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset/)
+
 ### Descripción Adicional
 
 Cada carpeta y archivo está organizado para facilitar la navegación y la colaboración dentro del proyecto. La carpeta **Code** y los notebooks contienen el código fuente, mientras que las carpetas de datos, imágenes, y videos permiten la inclusión de recursos y materiales de apoyo. Los archivos de Power BI están organizados por análisis específicos que se realizan sobre los datos.
@@ -40,6 +52,12 @@ Si tienes alguna pregunta sobre cómo usar el repositorio o necesitas más detal
 ## Plan General - Proyecto Final
 
 ![image.png](./Images/PlanGeneral.png)
+
+---
+
+## Chatbot Arquitectura 
+
+![image.png](./Images/Chatbot.png)
 
 ---
 
