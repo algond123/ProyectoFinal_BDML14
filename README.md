@@ -27,7 +27,6 @@ Este repositorio contiene diversos archivos y carpetas organizados para el desar
 - **README.md**: Este archivo con la descripción y estructura del repositorio.
 - **code_chatbot.ipynb**: Notebook de Jupyter relacionado con el desarrollo del chatbot.
 - **code_proyecto.ipynb**: Notebook con el código principal del proyecto.
-- **code_simulacion_sql_spark.ipynb**: Notebook relacionado con la simulación utilizando SQL y Spark.
 - **code_simu_StorageIngestMetrics.ipynb**: Notebook relacionado con la simulación del Almacenamiento, Ingesta y Métricas, utilizando REST, SQLite y PySpark.
 
 ## Datasets del Proyecto
